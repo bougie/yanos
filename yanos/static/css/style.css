@@ -17,12 +17,12 @@ h2
     color: #0082B0;
 }
 
-a, a:hover, a:visited
+/*a, a:hover, a:visited
 {
 	color: #0082B0;
 	text-decoration: none;
 }
-a:hover { text-decoration: underline; }
+a:hover { text-decoration: underline; }*/
 
 #page
 {
@@ -35,36 +35,9 @@ a:hover { text-decoration: underline; }
 	padding-bottom: 0;
 	margin: auto;
 }
-/*#menu
-{
-	float: left;
-	width: 20%;
-}
-#menu h2
-{
-	margin-top: 0;
-	margin-bottom: 5px;
-}
-#menu ul
-{
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	list-style-type: none;
-}
-#menu a
-{
-    color: #444444;
-}*/
 
 #content
 {
-	/*width: 79%;
-	margin-left: 20%;*/
-}
-.graphs_list
-{
-	text-align: center;
 }
 
 .footer
