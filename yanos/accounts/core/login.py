@@ -1,8 +1,7 @@
 from sqlalchemy import exc
 from werkzeug.security import check_password_hash
-from flask.ext.login import login_user, current_user 
+from flask.ext.login import login_user
 
-#from ... import db
 from ..models import User
 
 def coreLogin(username, password, remember_me = False):
