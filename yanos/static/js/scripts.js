@@ -55,47 +55,52 @@ function login_response_handler(data) {
 	}
 }
 
-$(function() {
-	$('#register-popup').on('shown.bs.modal', function() {
-		// Display the register form if it was previously hide
+function register_click_callback() {
+	var action = $(name + ' #register-form').attr('action');
+	var pwd1 = $(name + ' #register-form #password').val();
+	var pwd2 = $(name + ' #register-form #password2').val();
+
+	if(pwd1 == pwd2) {
+		$.ajax({
+			url: action,
+			type: 'POST',
+			dataType: 'json',
+			data: $('form#register-form').serialize(),
+			success: register_response_handler
+		});
+	}
+}
+		
+function set_form_modal(name, click_callback) {
+	$(name).on('shown.bs.modal', function() {
+		// Display the form if it was previously hide
 		// (like after a succes form submission)
-		$('#register-popup .modal-body form').show();
+		$(name + ' .modal-body form').show();
 
 		// Show form cancel and valid buttons
 		var confirm_buttons = '<div class="modal-footer">';
 		confirm_buttons += '<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>';
 		confirm_buttons += '<button type="button" class="btn btn-primary" id="btn-submit">Valider</button>';
 		confirm_buttons += '</div>';
-		$('#register-popup .modal-content').append(confirm_buttons);
+		$(name + ' .modal-content').append(confirm_buttons);
 
 		// Send the form by ajax request
-		$('#register-popup #btn-submit').on('click', function() {
-
-			var action = $('#register-popup #register-form').attr('action');
-			var pwd1 = $('#register-popup #register-form #password').val();
-			var pwd2 = $('#register-popup #register-form #password2').val();
-
-			if(pwd1 == pwd2) {
-				$.ajax({
-					url: action,
-					type: 'POST',
-					dataType: 'json',
-					data: $('form#register-form').serialize(),
-					success: register_response_handler
-				});
-			}
-		});
+		$(name + ' #btn-submit').on('click', click_callback);
 	});
-	$('#register-popup').on('hidden.bs.modal', function() {
+	$(name).on('hidden.bs.modal', function() {
 		// Remove custom header and custom footer
 		// Default one will be reloaded for the next showing of the modal
-		if($('#register-popup .modal-notif')) {
-			$('#register-popup .modal-notif').remove();
+		if($(name + ' .modal-notif')) {
+			$(name + ' .modal-notif').remove();
 		}
-		if($('#register-popup .modal-footer')) {
-			$('#register-popup .modal-footer').remove();
+		if($(name + ' .modal-footer')) {
+			$(name + ' .modal-footer').remove();
 		}
-	});
+	})
+}
+$(function() {
+	set_form_modal('#register-popup', register_click_callback);
+
 	$('#login-popup').on('shown.bs.modal', function() {
 		// Display the login form if it was previously hide
 		// (like after a succes form submission)
