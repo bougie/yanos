@@ -4,6 +4,7 @@ from . import bp
 from .forms import RegisterForm, LoginForm
 from .core.register import coreRegister
 from .core.login import coreLogin
+from .core.logout import coreLogout
 
 @bp.route('/')
 def index():
@@ -53,6 +54,11 @@ def login():
 			'form': form
 		}
 		return render_template('accounts/login.j2', **tpl_vars)
+
+@bp.route('/logout')
+def logout():
+    coreLogout()
+    return redirect(url_for('accounts.index'))
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
