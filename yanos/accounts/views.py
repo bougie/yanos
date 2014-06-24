@@ -22,6 +22,7 @@ def login():
 				connected = coreLogin(
 					username=form.username.data,
 					password=form.password.data,
+					remember_me=form.remember.data
 				)
 			except Exception as e:
 				print(str(e))
