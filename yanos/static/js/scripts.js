@@ -44,7 +44,9 @@ function login_response_handler(data) {
 	}
 
 	if(data.success) {
-		redirect(data.recdirect);
+		if(data.redirect) {
+			redirect(data.redirect);
+		}
 	} else {
 		// Show error message before the login form
 		$('#login-popup .modal-body').prepend(

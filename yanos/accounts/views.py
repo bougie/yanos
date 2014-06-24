@@ -18,7 +18,7 @@ def login():
 	if request.method == 'POST':
 		if form.validate_on_submit():
 			try:
-				coreLogin(
+				connected = coreLogin(
 					username=form.username.data,
 					password=form.password.data,
 				)
@@ -29,7 +29,17 @@ def login():
 					'msg': str(e)
 				}
 			else:
-				return redirect(url_for('accounts.index'))
+				if connected:
+					json = {
+						'success': True,
+						'msg': 'Vous etes maintenant connecté',
+						'redirect': url_for('accounts.index')
+					}
+				else:
+					json = {
+						'success': False,
+						'msg': 'Utilisateur ou mot de passe incorrect'
+					}
 		else:
 			json = {
 				'success': False,
