@@ -90,18 +90,24 @@ function login_click_callback() {
 }
 
 function set_form_modal(name, click_callback) {
-	$(name).on('shown.bs.modal', function() {
-		// Display the form if it was previously hide
-		// (like after a succes form submission)
-		$(name + ' .modal-body form').show();
-
+	function set_basic_buttons(name) {
 		// Show form cancel and valid buttons
 		var confirm_buttons = '<div class="modal-footer">';
 		confirm_buttons += '<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>';
 		confirm_buttons += '<button type="button" class="btn btn-primary" id="btn-submit">Valider</button>';
 		confirm_buttons += '</div>';
 		$(name + ' .modal-content').append(confirm_buttons);
+	}
 
+	$(name).on('loaded.bs.modal', function() {
+		set_basic_buttons(name);
+	});
+	$(name).on('show.bs.modal', function() {
+		// Display the form if it was previously hide
+		// (like after a succes form submission)
+		$(name + ' .modal-body form').show();
+	});
+	$(name).on('shown.bs.modal', function() {
 		// Send the form by ajax request
 		$(name + ' #btn-submit').on('click', click_callback);
 	});
@@ -113,6 +119,8 @@ function set_form_modal(name, click_callback) {
 		}
 		if($(name + ' .modal-footer')) {
 			$(name + ' .modal-footer').remove();
+
+			set_basic_buttons(name);
 		}
 	})
 }
