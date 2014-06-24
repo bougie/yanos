@@ -8,6 +8,10 @@ class User(db.Model):
 	name = db.Column(db.String(80), unique=True)
 	password = db.Column(db.String(255))
 
+	def __init__(self, name, password):
+		self.name = name
+		self.password = password
+
 	def is_authenticated(self):
 		return True
 
@@ -18,7 +22,7 @@ class User(db.Model):
 		return False
 	 
 	def get_id(self):
-		return self(self.id)
+		return str(self.id)
 				 
 	def __repr__(self):
 		return '<User %r>' % (self.username)
