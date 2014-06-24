@@ -111,15 +111,13 @@ $(function() {
 
 			var action = $('#login-popup #login-form').attr('action');
 
-			if(pwd1 == pwd2) {
-				$.ajax({
-					url: action,
-					type: 'POST',
-					dataType: 'json',
-					data: $('form#login-form').serialize(),
-					success: login_response_handler
-				});
-			}
+			$.ajax({
+				url: action,
+				type: 'POST',
+				dataType: 'json',
+				data: $('form#login-form').serialize(),
+				success: login_response_handler
+			});
 		});
 	});
 	$('#login-popup').on('hidden.bs.modal', function() {
