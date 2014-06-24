@@ -34,6 +34,25 @@ function register_response_handler(data) {
 	}
 }
 
+/**
+ * Handle ajax response after form submit for the login form
+ */
+function login_response_handler(data) {
+	if($('#login-popup .modal-notif')) {
+		// Remove a notification message if it exists
+		$('#login-popup .modal-notif').remove();
+	}
+
+	if(data.success) {
+		redirect(data.recdirect);
+	} else {
+		// Show error message before the login form
+		$('#login-popup .modal-body').prepend(
+			'<div class="modal-notif">' + data.msg + '</div>'
+		);
+	}
+}
+
 $(function() {
 	$('#register-popup').on('shown.bs.modal', function() {
 		// Display the register form if it was previously hide
@@ -74,5 +93,33 @@ $(function() {
 		if($('#register-popup .modal-footer')) {
 			$('#register-popup .modal-footer').remove();
 		}
+	});
+	$('#login-popup').on('shown.bs.modal', function() {
+		// Display the login form if it was previously hide
+		// (like after a succes form submission)
+		$('#login-popup .modal-body form').show();
+
+		// Show form cancel and valid buttons
+		var confirm_buttons = '<div class="modal-footer">';
+		confirm_buttons += '<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>';
+		confirm_buttons += '<button type="button" class="btn btn-primary" id="btn-submit">Valider</button>';
+		confirm_buttons += '</div>';
+		$('#login-popup .modal-content').append(confirm_buttons);
+
+		// Send the form by ajax request
+		$('#login-popup #btn-submit').on('click', function() {
+
+			var action = $('#login-popup #login-form').attr('action');
+
+			if(pwd1 == pwd2) {
+				$.ajax({
+					url: action,
+					type: 'POST',
+					dataType: 'json',
+					data: $('form#login-form').serialize(),
+					success: login_response_handler
+				});
+			}
+		});
 	});
 })

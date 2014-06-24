@@ -1,8 +1,9 @@
 from flask import render_template, redirect, url_for, jsonify, request
 
 from . import bp
-from .forms import RegisterForm
+from .forms import RegisterForm, LoginForm
 from .core.register import coreRegister
+from .core.login import coreLogin
 
 @bp.route('/')
 def index():
@@ -11,12 +12,37 @@ def index():
 	}
 	return render_template('accounts/index.j2', **tpl_vars)
 
-@bp.route('/login')
+@bp.route('/login', methods=['GET', 'POST'])
 def login():
-	tpl_vars = {
-		'page_title': '\_o&lt;~ KOIN KOIN LOGIN'
-	}
-	return render_template('accounts/login.j2', **tpl_vars)
+	form = LoginForm(csrf_enabled=False)
+	if request.method == 'POST':
+		if form.validate_on_submit():
+			try:
+				coreLogin(
+					username=form.username.data,
+					password=form.password.data,
+				)
+			except Exception as e:
+				print(str(e))
+				json = {
+					'success': False,
+					'msg': str(e)
+				}
+			else:
+				return redirect(url_for('accounts.index'))
+		else:
+			json = {
+				'success': False,
+				'msg': 'Veuillez à remplir correctement le formulaire'
+			}
+
+		return jsonify(**json)
+	else:
+		tpl_vars = {
+			'page_title': '\_o&lt;~ KOIN KOIN LOGIN',
+			'form': form
+		}
+		return render_template('accounts/login.j2', **tpl_vars)
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -44,7 +70,7 @@ def register():
 		else:
 			json = {
 				'success': False,
-				'msg': 'Veuillez à remplir le formulaire comme il faut bande de guignols'
+				'msg': 'Veuillez à remplir correctement le formulaire'
 			}
 
 		return jsonify(**json)

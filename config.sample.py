@@ -1,4 +1,6 @@
 DEBUG = False
 
+SECRET_KEY = ''
+
 # Database URI
 SQLALCHEMY_DATABASE_URI = ""

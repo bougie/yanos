@@ -25,7 +25,11 @@
 				<div class="modal fade" id="register-popup" tabindex="-1" role="dialog" aria-labelledby="register-popup-label" aria-hidden="true">
 					<div class="modal-dialog"><div class="modal-content"></div></div>
 				</div>
+				<div class="modal fade" id="login-popup" tabindex="-1" role="dialog" aria-labelledby="login-popup-label" aria-hidden="true">
+					<div class="modal-dialog"><div class="modal-content"></div></div>
+				</div>
 				<a href="{{url_for('accounts.register')}}" role="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#register-popup">S'enregistrer</a>
+				<a href="{{url_for('accounts.login')}}" role="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#login-popup">Se connecter</a>
 				{% block content %}
 				{% endblock %}
 			</div>
