@@ -55,6 +55,9 @@ function login_response_handler(data) {
 	}
 }
 
+/**
+ * Function which will be called when clicking on the register button
+ */
 function register_click_callback() {
 	var action = $(name + ' #register-form').attr('action');
 	var pwd1 = $(name + ' #register-form #password').val();
@@ -71,6 +74,9 @@ function register_click_callback() {
 	}
 }
 
+/**
+ * Function which will be called when clicking on the login button
+ */
 function login_click_callback() {
 	var action = $('#login-popup #login-form').attr('action');
 
