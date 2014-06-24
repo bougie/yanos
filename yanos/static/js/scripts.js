@@ -70,7 +70,19 @@ function register_click_callback() {
 		});
 	}
 }
-		
+
+function login_click_callback() {
+	var action = $('#login-popup #login-form').attr('action');
+
+	$.ajax({
+		url: action,
+		type: 'POST',
+		dataType: 'json',
+		data: $('form#login-form').serialize(),
+		success: login_response_handler
+	});
+}
+
 function set_form_modal(name, click_callback) {
 	$(name).on('shown.bs.modal', function() {
 		// Display the form if it was previously hide
@@ -98,44 +110,8 @@ function set_form_modal(name, click_callback) {
 		}
 	})
 }
+
 $(function() {
 	set_form_modal('#register-popup', register_click_callback);
-
-	$('#login-popup').on('shown.bs.modal', function() {
-		// Display the login form if it was previously hide
-		// (like after a succes form submission)
-		$('#login-popup .modal-body form').show();
-
-		// Show form cancel and valid buttons
-		var confirm_buttons = '<div class="modal-footer">';
-		confirm_buttons += '<button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>';
-		confirm_buttons += '<button type="button" class="btn btn-primary" id="btn-submit">Valider</button>';
-		confirm_buttons += '</div>';
-		$('#login-popup .modal-content').append(confirm_buttons);
-
-		// Send the form by ajax request
-		$('#login-popup #btn-submit').on('click', function() {
-
-			var action = $('#login-popup #login-form').attr('action');
-
-			$.ajax({
-				url: action,
-				type: 'POST',
-				dataType: 'json',
-				data: $('form#login-form').serialize(),
-				success: login_response_handler
-			});
-		});
-	});
-	$('#login-popup').on('hidden.bs.modal', function() {
-		// Remove custom header and custom footer
-		// Default one will be reloaded for the next showing of the modal
-		if($('#login-popup .modal-notif')) {
-			$('#login-popup .modal-notif').remove();
-		}
-		if($('#login-popup .modal-footer')) {
-			$('#login-popup .modal-footer').remove();
-		}
-	});
-
+	set_form_modal('#login-popup', login_click_callback);
 })
