@@ -122,4 +122,15 @@ $(function() {
 			}
 		});
 	});
+	$('#login-popup').on('hidden.bs.modal', function() {
+		// Remove custom header and custom footer
+		// Default one will be reloaded for the next showing of the modal
+		if($('#login-popup .modal-notif')) {
+			$('#login-popup .modal-notif').remove();
+		}
+		if($('#login-popup .modal-footer')) {
+			$('#login-popup .modal-footer').remove();
+		}
+	});
+
 })
