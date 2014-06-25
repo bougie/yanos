@@ -6,6 +6,13 @@ from .core.register import coreRegister
 from .core.login import coreLogin
 from .core.logout import coreLogout
 
+@bp.route('/account')
+def index():
+	tpl_vars = {
+		'page_title': '\_o&lt;~ KOIN KOIN ACCOUNT'
+	}
+	return render_template('accounts/index.j2', **tpl_vars)
+
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
 	form = LoginForm(csrf_enabled=False)
