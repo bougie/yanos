@@ -8,3 +8,5 @@ db = SQLAlchemy(app)
 
 from .accounts import bp
 app.register_blueprint(bp)
+
+from .views import *

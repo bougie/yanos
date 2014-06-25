@@ -6,13 +6,6 @@ from .core.register import coreRegister
 from .core.login import coreLogin
 from .core.logout import coreLogout
 
-@bp.route('/')
-def index():
-	tpl_vars = {
-		'page_title': '\_o&lt;~ KOIN KOIN INDEX'
-	}
-	return render_template('accounts/index.j2', **tpl_vars)
-
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
 	form = LoginForm(csrf_enabled=False)
@@ -35,7 +28,7 @@ def login():
 					json = {
 						'success': True,
 						'msg': 'Vous etes maintenant connecté',
-						'redirect': url_for('accounts.index')
+						'redirect': url_for('index')
 					}
 				else:
 					json = {
@@ -59,7 +52,7 @@ def login():
 @bp.route('/logout')
 def logout():
     coreLogout()
-    return redirect(url_for('accounts.index'))
+    return redirect(url_for('index'))
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
