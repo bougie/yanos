@@ -1,10 +1,11 @@
 from flask import render_template, redirect, url_for, jsonify, request
 
 from . import bp
-from .forms import RegisterForm, LoginForm
+from .forms import LoginForm, PasswordForm, RegisterForm
 from .core.register import coreRegister
 from .core.login import coreLogin
 from .core.logout import coreLogout
+from .core.password import corePassword
 
 @bp.route('/account')
 def index():
@@ -60,6 +61,28 @@ def login():
 def logout():
     coreLogout()
     return redirect(url_for('index'))
+
+@bp.route('/password', methods=['GET', 'POST'])
+def password():
+	form = RegisterForm(csrf_enabled=False)
+	if request.method == 'POST':
+		if form.validate_on_submit():
+			try:
+				corePassword(
+					old_password=form.old_password.data,
+					password=form.password.data,
+					password2=form.password2.data
+				)
+			except:
+				pass
+			else:
+				return redirect(url_for('accounts.index'))
+
+	tpl_vars = {
+		'page_title': '\_o&lt;~ KOIN KOIN PASSWORD',
+		'form': form
+	}
+	return render_template('accounts/password.j2', **tpl_vars)
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
