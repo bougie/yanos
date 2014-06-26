@@ -2,4 +2,11 @@
 
 {% block content %}
 <h2>Mon compte</h2>
+<ul>
+	<li>
+		<a href="{{url_for('accounts.password')}}">
+			Changer mon mot de passe
+		</a>
+	</li>
+</ul>
 {% endblock %}
