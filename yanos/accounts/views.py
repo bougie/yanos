@@ -64,7 +64,7 @@ def logout():
 
 @bp.route('/password', methods=['GET', 'POST'])
 def password():
-	form = RegisterForm(csrf_enabled=False)
+	form = PasswordForm(csrf_enabled=False)
 	if request.method == 'POST':
 		if form.validate_on_submit():
 			try:
@@ -73,7 +73,8 @@ def password():
 					password=form.password.data,
 					password2=form.password2.data
 				)
-			except:
+			except Exception as e:
+				print(str(e))
 				pass
 			else:
 				return redirect(url_for('accounts.index'))
