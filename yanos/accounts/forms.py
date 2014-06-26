@@ -8,7 +8,7 @@ class LoginForm(Form):
 	remember = BooleanField('Remember')
 
 class PasswordForm(Form):
-	old_password = TextField('OldPassword', validators=[Required()])
+	old_password = PasswordField('OldPassword', validators=[Required()])
 	password = PasswordField('Password', validators=[Required()])
 	password2 = PasswordField('Password2', validators=[Required()])
 
