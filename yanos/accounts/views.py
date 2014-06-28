@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, jsonify, request
+from flask import current_app, render_template, redirect, url_for, jsonify, request
 
 from . import bp
 from .forms import LoginForm, PasswordForm, RegisterForm
@@ -26,10 +26,10 @@ def login():
 					remember_me=form.remember.data
 				)
 			except Exception as e:
-				print(str(e))
+				current_app.logger.error(str(e))
 				json = {
 					'success': False,
-					'msg': str(e)
+					'msg': 'Erreur lors de la connexion'
 				}
 			else:
 				if connected:
@@ -74,8 +74,8 @@ def password():
 					password2=form.password2.data
 				)
 			except Exception as e:
-				print(str(e))
-				pass
+				current_app.logger.error(str(e))
+				# Error will be displayed by the form
 			else:
 				return redirect(url_for('accounts.index'))
 
@@ -97,10 +97,10 @@ def register():
 					password2=form.password2.data
 				)
 			except Exception as e:
-				print(str(e))
+				current_app.logger.error(str(e))
 				json = {
 					'success': False,
-					'msg': str(e)
+					'msg': 'Utilisateur existant ou les ;ots de passes sont differents'
 				}
 			else:
 				json = {
@@ -111,7 +111,7 @@ def register():
 		else:
 			json = {
 				'success': False,
-				'msg': 'Veuillez à remplir correctement le formulaire'
+				'msg': 'Veuillez remplir correctement le formulaire'
 			}
 
 		return jsonify(**json)
