@@ -14,7 +14,6 @@ def corePassword(old_password, password, password2):
 	try:
 		usr = User.query.filter_by(name=g.user.name).first()
 	except Exception as e:
-		print(str(e))
 		raise Exception('unknown error')
 	else:
 		if usr is not None:
