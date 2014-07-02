@@ -125,7 +125,123 @@ function set_form_modal(name, click_callback) {
 	})
 }
 
+/*
+ * Handle "request" to manage priority add and edit forms
+ */
+function edit_priority_handler() {
+	// Current priority ID which is edited
+	var curr_id = -1;
+	// Current priority name which is edited
+	var curr_name = "";
+	// Value of the td action cell before entering in "edit mode"
+	var curr_act = "";
+
+	/**
+	 * Add input into the table to edit priority
+	 */
+	var show_input_fct = function() {
+		// TR ligne of the table which contains priority
+		var elt = $(this).parent();
+		// Priority ID
+		var id = elt.attr('id').split('-')[1];
+
+		if(id != undefined && (curr_id == -1 || id == curr_id)) {
+			var td_name_elt = elt.children('td:nth-child(1)');
+			var td_act_elt = elt.children('td:nth-child(2)');
+
+			// Save the current priority * to (re)set it when discard changes
+			curr_name = td_name_elt.html();
+			curr_act = td_act_elt.html();
+			curr_id = id;
+
+			var input = "<input type=\"text\" class=\"form-control\" name=\"name\" value=\"" + curr_name + "\" />";
+			var actions = "<button id=\"btn-send\" type=\"button\" class=\"btn btn-success btn-xs\">Valider</button>";
+			actions += "<button id=\"btn-cancel\" type=\"button\" class=\"btn btn-warning btn-xs\">Annuler</button>";
+			td_name_elt.html(input);
+			td_act_elt.html(actions);
+
+			// Remove click event listener -> can't edit another field
+			$('#form-priority-edit table tbody tr td:nth-child(1)').unbind('click');
+			// Disable field editing when clicked on cancel button
+			$('#form-priority-edit #btn-cancel').on('click', hide_input_fct);
+			$('#form-priority-edit #btn-send').on('click', save_input_fct);
+		}
+	};
+	/**
+	 * Remove input in the table and only display priority informations
+	 */
+	var hide_input_fct = function() {
+		var elt = $('#priority-' + curr_id);
+		var td_name_elt = elt.children('td:nth-child(1)');
+		var td_act_elt = elt.children('td:nth-child(2)');
+
+		td_name_elt.html(curr_name);
+		td_act_elt.html(curr_act);
+		curr_name = "";
+		curr_act = "";
+		curr_id = -1;
+
+		$('#form-priority-edit table tbody tr td:nth-child(1)').on('click', show_input_fct);
+	};
+	/**
+	 * Send and save changes
+	 */
+	var save_input_fct = function() {
+		var elt = $('#priority-' + curr_id);
+		var action = $('#form-priority-edit').attr('action') + '/' + curr_id + '?pwet';
+
+		$.ajax({
+			url: action,
+			type: 'POST',
+			dataType: 'json',
+			data: $('form#form-priority-edit').serialize(),
+			success: function (data) {
+				if(data.success) {
+					curr_name = $('#form-priority-edit input[name=name]').val();
+					hide_input_fct();
+				}
+			}
+		});
+	};
+
+	$('#form-priority-edit table tbody tr td:nth-child(1)').on('click', show_input_fct);
+}
+/**
+ * Handle "reauests" to delete a priority
+ */
+function delete_priority_handler() {
+	var action = $('#form-priority-edit').attr('action');
+	// Priority ID
+	var pri_id = $(this).parent().parent().attr('id').split('-')[1];
+	// Priority name
+	var pri_name = $('#priority-' + pri_id).children('td:nth-child(1)').html();
+
+	// Add a tmp input with the priority name
+	// It will be use for the form validation
+	$('#form-priority-edit').prepend('<input type="hidden" id="name" name="name" value="' + pri_name + '">');
+
+	$.ajax({
+		url: action + '/' + pri_id + '?delete=1',
+		type: 'POST',
+		dataType: 'json',
+		data: $('form#form-priority-edit').serialize(),
+		success: function (data) {
+			if(data.success) {
+				// Remove table line of the priority
+				$('#priority-' + pri_id).remove();
+			}
+		}
+	});
+
+	// Manually remove the input if we want to delete another priority
+	// without refresh the page
+	$('#form-priority-edit #name').remove();
+}
+
 $(function() {
 	set_form_modal('#register-popup', register_click_callback);
 	set_form_modal('#login-popup', login_click_callback);
+
+	$('#form-priority-edit #btn-delete').on('click', delete_priority_handler);
+	edit_priority_handler();
 })

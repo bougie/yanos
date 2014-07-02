@@ -54,3 +54,18 @@ a:hover { text-decoration: underline; }*/
 	clear: both;
 	margin-top: 15px;
 }
+
+.new_item
+{
+	margin-bottom: 15px;
+	background-color: #F2F2F2;
+	border: 1px solid #E5E5E5;
+	padding: 7px;
+}
+#form-priority-edit .col_name {}
+#form-priority-edit .col_actions
+{
+	width: 170px;
+	text-align: center;
+}
+#form-priority-edit .col_actions button { margin: 3px; }
