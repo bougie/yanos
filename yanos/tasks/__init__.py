@@ -1,4 +1,4 @@
-from flask import Blueprint, g
+from flask import Blueprint
 
 from .. import app
 
