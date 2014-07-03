@@ -10,7 +10,7 @@ def corePriorityAdd(name):
 		db.session.add(pri)
 		db.session.commit()
 	except exc.IntegrityError as e:
-		raise Exception('Priority is already in use')
+		raise Exception('Priority name is already in use')
 	except:
 		raise Exception('unknown error')
 
@@ -31,7 +31,7 @@ def corePriorityEdit(id, name):
 
 		db.session.commit()
 	except exc.IntegrityError as e:
-		raise Exception('Priority is already in use')
+		raise Exception('Priority name is already in use')
 	except Exception as e:
 		raise Exception('unknown error')
 
