@@ -16,6 +16,8 @@ def coreRegister(username, password, password2):
 		db.session.add(usr)
 		db.session.commit()
 	except exc.IntegrityError as e:
+		db.session.rollback()
 		raise Exception('username is already in use')
 	except:
+		db.session.rollback()
 		raise Exception('unknown error')
