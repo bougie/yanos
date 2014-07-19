@@ -1,0 +1,9 @@
+<div class="member_box">
+	{% if user.is_authenticated %}
+		<a href="{% url 'accounts_index' %}">Mon compte</a>
+		<a href="{% url 'accounts_logout' %}">Se deconnecter</a>
+	{% else %}
+		<a href="{% url 'accounts_register' %}" role="button" data-toggle="modal" data-target="#register-popup">S'enregistrer</a>
+		<a href="{% url 'accounts_login' %}" role="button" data-toggle="modal" data-target="#login-popup">Se connecter</a>
+	{% endif %}
+</div>

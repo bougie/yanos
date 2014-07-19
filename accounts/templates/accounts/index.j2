@@ -1,0 +1,12 @@
+{% extends 'base.j2' %}
+
+{% block content %}
+<h2>Mon compte</h2>
+<ul>
+	<li>
+		<a href="{% url 'accounts_password' %}">
+			Changer mon mot de passe
+		</a>
+	</li>
+</ul>
+{% endblock %}

@@ -1,9 +1,0 @@
-<div class="member_box">
-		{% if not g.user.is_authenticated() %}
-		<a href="{{url_for('accounts.register')}}" role="button" data-toggle="modal" data-target="#register-popup">S'enregistrer</a>
-		<a href="{{url_for('accounts.login')}}" role="button" data-toggle="modal" data-target="#login-popup">Se connecter</a>
-		{% else %}
-		<a href="{{url_for('accounts.index')}}">Mon compte</a>
-		<a href="{{url_for('accounts.logout')}}">Se deconnecter</a>
-		{% endif %}
-</div>
