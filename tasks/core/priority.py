@@ -30,7 +30,7 @@ def corePriorityEdit(id, name):
         pri.name = name
 
         pri.save()
-    except django.db.IntegrityError:
+    except IntegrityError:
         raise CoreException(1, 'Priority name is already in use')
     except Exception:
         raise CoreException(0, 'unknown error')
