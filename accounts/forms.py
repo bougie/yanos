@@ -4,7 +4,6 @@ from django import forms
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=100, required=True)
     password = forms.CharField(required=True, widget=forms.PasswordInput)
-    remember = forms.BooleanField(required=False)
 
 
 class PasswordForm(forms.Form):

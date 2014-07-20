@@ -28,8 +28,7 @@ def login(request):
             try:
                 user = coreLogin(
                     username=form.cleaned_data['username'],
-                    password=form.cleaned_data['password'],
-                    remember_me=form.cleaned_data['remember']
+                    password=form.cleaned_data['password']
                 )
                 django.contrib.auth.login(request, user)
             except:

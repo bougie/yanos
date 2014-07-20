@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate
 from lib.exception import CoreException
 
 
-def coreLogin(username, password, remember_me=False):
+def coreLogin(username, password):
     try:
         user = authenticate(username=username, password=password)
     except Exception as e:
