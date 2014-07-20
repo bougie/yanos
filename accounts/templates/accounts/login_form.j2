@@ -1,6 +1,10 @@
 {% load bootstrap %}
 
-<form action="{% url 'accounts_login' %}" method="POST" id="login-form">
+{% if redirect_url %}
+	<form action="{% url 'accounts_login' %}?next={{redirect_url}}" method="POST" id="login-form">
+{% else %}
+	<form action="{% url 'accounts_login' %}" method="POST" id="login-form">
+{% endif %}
 	{% csrf_token %}
 	{{form|bootstrap}}
 

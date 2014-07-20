@@ -41,7 +41,7 @@ def login(request):
                 json = {
                     'success': True,
                     'msg': 'Vous etes maintenant connecté',
-                    'redirect': reverse('index')
+                    'redirect': request.GET.get('next', reverse('index'))
                 }
         else:
             json = {
@@ -54,7 +54,8 @@ def login(request):
         else:
             if json['success']:
                 messages.add_message(request, messages.SUCCESS, json['msg'])
-                return redirect('index')
+
+                return redirect(json['redirect'])
             else:
                 messages.add_message(request, messages.ERROR, json['msg'])
     else:
@@ -63,7 +64,8 @@ def login(request):
     tpl_vars = {
         'page_title': '\_o<~ KOIN KOIN LOGIN',
         'form': form,
-        'ajax': request.is_ajax()
+        'ajax': request.is_ajax(),
+        'redirect_url': request.GET.get('next', reverse('index'))
     }
     if request.is_ajax():
         return request_render(request, 'accounts/login_ajax.j2', tpl_vars)
