@@ -1,0 +1,14 @@
+{% load bootstrap %}
+
+{% block content %}
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	<h4 class="modal-title">{{page_title}}</h4>
+</div>
+<div class="modal-body">
+	<form action="{% url 'accounts_login' %}" method="POST" id="login-form">
+		{% csrf_token %}
+		{{form|bootstrap}}
+	</form>
+</div>
+{% endblock %}
