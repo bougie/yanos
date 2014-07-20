@@ -1,0 +1,42 @@
+{% extends 'base.j2' %}
+
+{% load bootstrap %}
+
+{% block content %}
+<h2>Gestion des états</h2>
+<div class="new_item">
+	<form action="{% url 'tasks_state' %}" method="POST" class="form-inline">
+		{% csrf_token %}
+		<fieldset>
+			<legend>Nouvel etat</legend>
+			<div class="form-group">
+				 <label class="sr-only" for="name">Nom</label>
+				 {{form.name|bootstrap_inline}}
+			</div>
+
+			<button type="submit" class="btn btn-default">Ajouter</button>
+		</fieldset>
+	</form>
+</div>
+
+<form action="{% url 'tasks_state' %}" method="POST" id="form-state-edit">
+	{% csrf_token %}
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th colspan="2">Etats</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for state in states %}
+			<tr id="lineid-{{state.id}}">
+				<td class="col_name">{{state.name}}</td>
+				<td class="col_actions">
+					<button type="button" id="btn-delete" class="btn btn-danger btn-xs">Supprimer</button>
+				</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+</form>
+{% endblock %}

@@ -247,4 +247,7 @@ $(function() {
 
 	$('#form-priority-edit #btn-delete').on('click', delete_intable_handler);
 	edit_intable_handler('#form-priority-edit');
+
+	$('#form-state-edit #btn-delete').on('click', delete_intable_handler);
+	edit_intable_handler('#form-state-edit');
 })

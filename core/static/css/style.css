@@ -69,3 +69,11 @@ a:hover { text-decoration: underline; }*/
 	text-align: center;
 }
 #form-priority-edit .col_actions button { margin: 3px; }
+
+#form-state-edit .col_name {}
+#form-state-edit .col_actions
+{
+	width: 170px;
+	text-align: center;
+}
+#form-state-edit .col_actions button { margin: 3px; }

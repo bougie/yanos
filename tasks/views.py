@@ -5,7 +5,9 @@ from lib.renderer import request_render
 from lib.response import JsonResponse
 from .core.priority import corePriorityAdd, corePriorityEdit, \
     corePriorityDelete, corePriorityList
-from .forms import PriorityForm
+from .core.state import coreStateAdd, coreStateEdit, coreStateDelete, \
+    coreStateList
+from .forms import PriorityForm, StateForm
 
 
 # @bp.route('/tasks')
@@ -16,10 +18,6 @@ def index(request):
     return request_render(request, 'tasks/index.j2', tpl_vars)
 
 
-# URL used to list and/or add a priority
-# @bp.route('/tasks/priority', methods=['GET', 'POST'])
-# URL used to edit or delete (with ?delete=1) a priority
-# @bp.route('/tasks/priority/<int:pid>', methods=['POST'])
 @login_required
 def priority(request, pid=None):
     if request.method == 'POST':
@@ -69,3 +67,54 @@ def priority(request, pid=None):
             'priorities': priorities
         }
         return request_render(request, 'tasks/priority/index.j2', tpl_vars)
+
+
+@login_required
+def state(request, sid=None):
+    if request.method == 'POST':
+        form = StateForm(request.POST)
+        if form.is_valid():
+            try:
+                # Add (default behaviour) a state
+                if sid is None:
+                    coreStateAdd(name=form.cleaned_data['name'])
+                # Edit or delete a state
+                else:
+                    delete = request.GET.get('delete', None)
+                    if delete is not None:
+                        if int(delete) == 1:
+                            coreStateDelete(id=sid)
+                        else:
+                            raise Exception('Bad value for delete')
+                    else:
+                        coreStateEdit(id=sid, name=form.cleaned_data['name'])
+            except Exception:
+                json = {
+                    'success': False
+                }
+            else:
+                json = {
+                    'success': True
+                }
+        else:
+            json = {
+                'success': False
+            }
+
+        if request.is_ajax():
+            return JsonResponse(json)
+        else:
+            return redirect('tasks_state')
+    else:
+        try:
+            states = coreStateList()
+        except Exception:
+            states = []
+
+        form = StateForm()
+        tpl_vars = {
+            'page_title': '\_o<~ KOIN KOIN STATE',
+            'form': form,
+            'states': states
+        }
+        return request_render(request, 'tasks/state/index.j2', tpl_vars)
