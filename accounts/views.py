@@ -1,7 +1,8 @@
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
-import django.contrib.auth
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+import django.contrib.auth
 
 from lib.renderer import request_render
 from lib.response import JsonResponse
@@ -48,13 +49,25 @@ def login(request):
                 'msg': 'Veuillez à remplir correctement le formulaire'
             }
 
-        return JsonResponse(content=json)
+        if request.is_ajax():
+            return JsonResponse(content=json)
+        else:
+            if json['success']:
+                messages.add_message(request, messages.SUCCESS, json['msg'])
+                return redirect('index')
+            else:
+                messages.add_message(request, messages.ERROR, json['msg'])
     else:
         form = LoginForm()
-        tpl_vars = {
-            'page_title': '\_o<~ KOIN KOIN LOGIN',
-            'form': form
-        }
+
+    tpl_vars = {
+        'page_title': '\_o<~ KOIN KOIN LOGIN',
+        'form': form,
+        'ajax': request.is_ajax()
+    }
+    if request.is_ajax():
+        return request_render(request, 'accounts/login_ajax.j2', tpl_vars)
+    else:
         return request_render(request, 'accounts/login.j2', tpl_vars)
 
 
@@ -117,13 +130,27 @@ def register(request):
                 'msg': 'Veuillez remplir correctement le formulaire'
             }
 
-        return JsonResponse(content=json, status=200)
+        if request.is_ajax():
+            return JsonResponse(content=json, status=200)
+        else:
+            if json['success']:
+                messages.add_message(request, messages.SUCCESS, json['msg'])
+                return redirect('index')
+            else:
+                messages.add_message(request, messages.ERROR, json['msg'])
     else:
         form = RegisterForm()
 
-        tpl_vars = {
-            'page_title': '\_o<~ KOIN KOIN REGISTER',
-            'form': form
-        }
+    tpl_vars = {
+        'page_title': '\_o<~ KOIN KOIN REGISTER',
+        'form': form,
+        'ajax': request.is_ajax()
+    }
 
+    if request.is_ajax():
+        return request_render(
+            request,
+            'accounts/register_ajax.j2',
+            tpl_vars)
+    else:
         return request_render(request, 'accounts/register.j2', tpl_vars)
