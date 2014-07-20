@@ -30,7 +30,7 @@ def coreStateEdit(id, name):
         st.name = name
 
         st.save()
-    except django.db.IntegrityError:
+    except IntegrityError:
         raise CoreException(1, 'State name is already in use')
     except Exception:
         raise CoreException(0, 'unknown error')
