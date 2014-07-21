@@ -1,5 +1,6 @@
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from lib.renderer import request_render
 from lib.response import JsonResponse
@@ -39,20 +40,28 @@ def priority(request, pid=None):
                         corePriorityEdit(id=pid, name=form.cleaned_data['name'])
             except Exception:
                 json = {
-                    'success': False
+                    'success': False,
+                    'msg': 'Impossible d\'effectuer l\'action demandée'
                 }
             else:
                 json = {
-                    'success': True
+                    'success': True,
+                    'msg': 'Action éffectuée avec success'
                 }
         else:
             json = {
-                'success': False
+                'success': False,
+                'msg': 'Données saisies invalides'
             }
 
         if request.is_ajax():
             return JsonResponse(json)
         else:
+            if json['success']:
+                messages.add_message(request, messages.SUCCESS, json['msg'])
+            else:
+                messages.add_message(request, messages.ERROR, json['msg'])
+
             return redirect('tasks_priority')
     else:
         try:
@@ -90,20 +99,28 @@ def state(request, sid=None):
                         coreStateEdit(id=sid, name=form.cleaned_data['name'])
             except Exception:
                 json = {
-                    'success': False
+                    'success': False,
+                    'msg': 'Impossible d\'effectuer l\'action demandée'
                 }
             else:
                 json = {
-                    'success': True
+                    'success': True,
+                    'msg': 'Action éffectuée avec success'
                 }
         else:
             json = {
-                'success': False
+                'success': False,
+                'msg': 'Données saisies invalides'
             }
 
         if request.is_ajax():
             return JsonResponse(json)
         else:
+            if json['success']:
+                messages.add_message(request, messages.SUCCESS, json['msg'])
+            else:
+                messages.add_message(request, messages.ERROR, json['msg'])
+
             return redirect('tasks_state')
     else:
         try:
