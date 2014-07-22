@@ -2,6 +2,21 @@ function redirect(url) {
 	window.location.replace(url);
 }
 
+function notification_message(msg, state) 
+{
+	var html = "";
+
+	html += "<div id=\"jspopmessage\" class=\"pop pop-top-wide pop-" + state + "\">"
+	html += "	<div class=\"pop-body\">" + msg + "</div>"
+	html += "</div>"
+
+	$('#content').prepend(html);
+	$('#jspopmessage').pop('show');
+	$('#jspopmessage').on('pop.hidden', function() {
+		$('#jspopmessage').remove();
+	});
+}
+
 /**
  * Handle ajax response after form submit for the register form
  */
@@ -46,6 +61,8 @@ function login_response_handler(data) {
 	if(data.success) {
 		if(data.redirect) {
 			redirect(data.redirect);
+		} else {
+			notification_message(data.msg, 'success');
 		}
 	} else {
 		// Show error message before the login form
@@ -199,6 +216,8 @@ function edit_intable_handler(htmlid) {
 				if(data.success) {
 					curr_name = $(htmlid + ' input[name=name]').val();
 					hide_input_fct();
+
+					notification_message(data.msg, 'success');
 				}
 			}
 		});
@@ -232,6 +251,8 @@ function delete_intable_handler() {
 			if(data.success) {
 				// Remove table line of the priority
 				$('#lineid-' + item_id).remove();
+
+				notification_message(data.msg, 'success');
 			}
 		}
 	});
