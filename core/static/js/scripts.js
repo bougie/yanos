@@ -199,6 +199,8 @@ function edit_intable_handler(htmlid) {
 		curr_id = -1;
 
 		$(htmlid + ' table tbody tr td:nth-child(1)').on('click', show_input_fct);
+
+		$(htmlid + ' #btn-delete').on('click', delete_intable_handler);
 	};
 	/**
 	 * Send and save changes
