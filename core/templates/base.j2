@@ -37,7 +37,7 @@
 					{% endfor %}
 					<script type='text/javascript'>
 					$(function() {
-						 $("div.pop").each(function() { $(this).pop("show") });
+						 $("div.pop").each(function() { $(this).pop("show", {'delay': 1500}) });
 					});
 					</script>
 				{% endif %}

@@ -11,7 +11,7 @@ function notification_message(msg, state)
 	html += "</div>"
 
 	$('#content').prepend(html);
-	$('#jspopmessage').pop('show');
+	$('#jspopmessage').pop('show', {'delay': 1500});
 	$('#jspopmessage').on('pop.hidden', function() {
 		$('#jspopmessage').remove();
 	});
