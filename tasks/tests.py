@@ -14,20 +14,39 @@ class PriorityTestCase(TestCase):
         self.user = User.objects.create_user(
             username='myuser',
             password='fubar')
+        self.user2 = User.objects.create_user(
+            username='myuser2',
+            password='fubar2')
         Priority(name='existing_priority', user=self.user).save()
+        Priority(name='existing_priority2', user=self.user2).save()
 
     def test_creating_success(self):
         corePriorityAdd('test', user=self.user)
-        self.assertEqual(2, Priority.objects.all().count())
+        self.assertEqual(3, Priority.objects.all().count())
+
+        corePriorityAdd('test2', user=self.user2)
+        self.assertEqual(4, Priority.objects.all().count())
 
     def test_creating_existing_name(self):
         try:
+            # Priority exists for user
             corePriorityAdd('existing_priority', user=self.user)
         except CoreException as e:
             self.assertEqual(1, e.code)
 
+    def test_creating_existing_name_with_another_user(self):
+        # This priority does not exists for the user 2
+        corePriorityAdd('existing_priority', user=self.user2)
+
     def test_deleting_success(self):
         corePriorityDelete(1, user=self.user)
+
+    def test_deleting_of_another_user(self):
+        try:
+            # Priority 2 is not own by user
+            corePriorityDelete(2, user=self.user)
+        except CoreException as e:
+            self.assertEqual(0, e.code)
 
     def test_deleting_non_existing(self):
         try:
@@ -40,6 +59,18 @@ class PriorityTestCase(TestCase):
 
         pri = Priority.objects.get(name='newname')
         self.assertIsNotNone(pri)
+
+    def test_editing_of_another_user(self):
+        try:
+            corePriorityEdit(2, 'newname', user=self.user)
+        except CoreException as e:
+            self.assertEqual(0, e.code)
+
+        try:
+            pri = Priority.objects.get(name='newname', user=self.user)
+        except:
+            pri = None
+        self.assertIsNone(pri)
 
     def test_editing_non_existing(self):
         try:
