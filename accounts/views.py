@@ -53,10 +53,10 @@ def login(request):
         else:
             if json['success']:
                 messages.add_message(request, messages.SUCCESS, json['msg'])
-
-                return redirect(json['redirect'])
             else:
                 messages.add_message(request, messages.ERROR, json['msg'])
+
+            return redirect(json['redirect'])
     else:
         form = LoginForm()
 
@@ -74,6 +74,11 @@ def login(request):
 
 def logout(request):
     coreLogout(request)
+    messages.add_message(
+        request,
+        messages.SUCCESS,
+        'Vous etes maintenant deconnecté')
+
     return redirect('index')
 
 
@@ -136,9 +141,10 @@ def register(request):
         else:
             if json['success']:
                 messages.add_message(request, messages.SUCCESS, json['msg'])
-                return redirect('index')
             else:
                 messages.add_message(request, messages.ERROR, json['msg'])
+
+            return redirect('index')
     else:
         form = RegisterForm()
 
