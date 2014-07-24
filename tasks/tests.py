@@ -95,11 +95,18 @@ class StateTestCase(TestCase):
         self.user = User.objects.create_user(
             username='myuser',
             password='fubar')
+        self.user2 = User.objects.create_user(
+            username='myuser2',
+            password='fubar2')
         State(name='existing_state', user=self.user).save()
+        State(name='existing_state2', user=self.user2).save()
 
     def test_creating_success(self):
         coreStateAdd('test', user=self.user)
-        self.assertEqual(2, State.objects.all().count())
+        self.assertEqual(3, State.objects.all().count())
+
+        coreStateAdd('test', user=self.user2)
+        self.assertEqual(4, State.objects.all().count())
 
     def test_creating_existing_name(self):
         try:
@@ -107,8 +114,19 @@ class StateTestCase(TestCase):
         except CoreException as e:
             self.assertEqual(1, e.code)
 
+    def test_creating_existing_name_with_another_user(self):
+        # This state does not exist for user2
+        coreStateAdd('existing_state', user=self.user2)
+
     def test_deleting_success(self):
         coreStateDelete(1, user=self.user)
+
+    def test_deleting_of_another_user(self):
+        try:
+            # State 2 is not own by user
+            coreStateDelete(2, user=self.user)
+        except CoreException as e:
+            self.assertEqual(0, e.code)
 
     def test_deleting_non_existing(self):
         try:
@@ -121,6 +139,18 @@ class StateTestCase(TestCase):
 
         st = State.objects.get(name='newname', user=self.user)
         self.assertIsNotNone(st)
+
+    def test_editing_of_another_user(self):
+        try:
+            coreStateEdit(1, 'newname', user=self.user2)
+        except CoreException as e:
+            self.assertEqual(0, e.code)
+
+        try:
+            st = State.objects.get(name='newname', user=self.user2)
+        except:
+            st = None
+        self.assertIsNone(st)
 
     def test_editing_non_existing(self):
         try:
