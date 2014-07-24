@@ -3,9 +3,12 @@ from django.contrib.auth.models import User
 
 
 class Priority(models.Model):
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50)
 
     user = models.ForeignKey(User)
+
+    class Meta:
+        unique_together = ('name', 'user')
 
 
 class State(models.Model):
