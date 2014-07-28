@@ -28,17 +28,12 @@
 
 			<div id="content">
 				{% if messages %}
-					{% for message in messages %}
-						<div class="pop pop-top-wide pop-{% if message.tags %}{{message.tags}}{% endif %}">
-							<div class="pop-body">
-								{{message}}
-							</div>
-						</div>
-					{% endfor %}
 					<script type='text/javascript'>
-					$(function() {
-						 $("div.pop").each(function() { $(this).pop("show", {'delay': 1500}) });
-					});
+						$(function() {
+							{% for message in messages %}
+								notification_message("{{message}}", "{{message.tags}}");
+							{% endfor %}
+						});
 					</script>
 				{% endif %}
 
