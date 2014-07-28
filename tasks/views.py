@@ -27,17 +27,22 @@ def priority(request, pid=None):
             try:
                 # Add (default behaviour) a priority
                 if pid is None:
-                    corePriorityAdd(name=form.cleaned_data['name'])
+                    corePriorityAdd(
+                        name=form.cleaned_data['name'],
+                        user=request.user)
                 # Edit or delete a priority
                 else:
                     delete = request.GET.get('delete', None)
                     if delete is not None:
                         if int(delete) == 1:
-                            corePriorityDelete(id=pid)
+                            corePriorityDelete(id=pid, user=request.user)
                         else:
                             raise Exception('Bad value for delete')
                     else:
-                        corePriorityEdit(id=pid, name=form.cleaned_data['name'])
+                        corePriorityEdit(
+                            id=pid,
+                            name=form.cleaned_data['name'],
+                            user=request.user)
             except Exception:
                 json = {
                     'success': False,
@@ -65,7 +70,7 @@ def priority(request, pid=None):
             return redirect('tasks_priority')
     else:
         try:
-            priorities = corePriorityList()
+            priorities = corePriorityList(user=request.user)
         except Exception:
             priorities = []
 
@@ -86,17 +91,22 @@ def state(request, sid=None):
             try:
                 # Add (default behaviour) a state
                 if sid is None:
-                    coreStateAdd(name=form.cleaned_data['name'])
+                    coreStateAdd(
+                        name=form.cleaned_data['name'],
+                        user=request.user)
                 # Edit or delete a state
                 else:
                     delete = request.GET.get('delete', None)
                     if delete is not None:
                         if int(delete) == 1:
-                            coreStateDelete(id=sid)
+                            coreStateDelete(id=sid, user=request.user)
                         else:
                             raise Exception('Bad value for delete')
                     else:
-                        coreStateEdit(id=sid, name=form.cleaned_data['name'])
+                        coreStateEdit(
+                            id=sid,
+                            name=form.cleaned_data['name'],
+                            user=request.user)
             except Exception:
                 json = {
                     'success': False,
@@ -124,7 +134,7 @@ def state(request, sid=None):
             return redirect('tasks_state')
     else:
         try:
-            states = coreStateList()
+            states = coreStateList(user=request.user)
         except Exception:
             states = []
 
