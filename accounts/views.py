@@ -56,7 +56,8 @@ def login(request):
             else:
                 messages.add_message(request, messages.ERROR, json['msg'])
 
-            return redirect(json['redirect'])
+            if 'redirect' in json:
+                return redirect(json['redirect'])
     else:
         form = LoginForm()
 
@@ -144,7 +145,8 @@ def register(request):
             else:
                 messages.add_message(request, messages.ERROR, json['msg'])
 
-            return redirect('index')
+            if 'redirect' in json:
+                return redirect('index')
     else:
         form = RegisterForm()
 
