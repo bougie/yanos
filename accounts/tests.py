@@ -10,13 +10,13 @@ class AccountsTestCase(TestCase):
     def setUp(self):
         User.objects.create_user(username='existinguser', password='fubar')
 
-    def test_registering_bad_password(self):
+    def test_registering_bad_password_failed(self):
         try:
             coreRegister('username', 'p1', 'p0')
         except CoreException as e:
             self.assertEqual(1, e.code)
 
-    def test_registering_existing_username(self):
+    def test_registering_existing_username_failed(self):
         try:
             coreRegister('existinguser', 'p1', 'p1')
         except CoreException as e:
@@ -27,13 +27,13 @@ class AccountsTestCase(TestCase):
 
         self.assertEqual(2, User.objects.all().count())
 
-    def test_login_bad_username(self):
+    def test_login_bad_username_failed(self):
         try:
             coreLogin(username='unexistinguser', password='pwet')
         except CoreException as e:
             self.assertEqual(1, e.code)
 
-    def test_login_bad_password(self):
+    def test_login_bad_password_failed(self):
         try:
             coreLogin(username='existinguser', password='pppp')
         except CoreException as e:
