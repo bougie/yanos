@@ -4,3 +4,4 @@ yanos/db.sqlite
 __pycache__
 db.sqlite3
 .ropeproject
+reports
