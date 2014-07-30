@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrapform',
+    'django_jenkins',
     'core',
     'accounts',
     'tasks',
@@ -83,3 +84,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# APPS to be tested
+PROJECT_APPS = (
+    'core',
+    'accounts',
+    'tasks'
+)
+# What to be test on each APPS
+JENKINS_TASKS = (
+    'django_jenkins.tasks.run_pep8',
+    'django_jenkins.tasks.run_flake8',
+    'django_jenkins.tasks.run_pyflakes',
+    'django_jenkins.tasks.run_pylint',
+    'django_jenkins.tasks.run_sloccount'
+)
